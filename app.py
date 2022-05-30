@@ -1,14 +1,17 @@
 from datetime import date
-from re import M
+from multiprocessing import connection
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+import pandas as pd
+import sqlite3 as sql
 app = Flask(__name__)
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///mydatabase.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app);
+
+
 
 class MyAttributes(db.Model):
     sno = db.Column(db.Integer, primary_key = True)
@@ -68,6 +71,22 @@ def delete(sno):
     db.session.delete(data)
     db.session.commit()
     return redirect('/')
+
+@app.route('/deleteAll/')
+def deleteAll():
+    alldata = MyAttributes.query.all()
+    MyAttributes.query.delete()
+    db.session.commit()
+    return redirect('/')
+
+
+@app.route('/export/')
+def export():
+    connection = sql.connect("mydatabase.db")
+    df = pd.read_sql(sql = "Select * from my_attributes order by name",con=connection)
+    df.to_excel("allRecords.xls")
+    return redirect('/')
+
 
 
 if __name__ == "__main__":
