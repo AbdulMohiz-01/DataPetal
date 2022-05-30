@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+    Update
+{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <br><br>
+    <h2>Update Data</h2>
+    <form action="/update/{{data.sno}}" method="POST">
+      <div class="mb-3">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required value="{{data.name}}" />
+      </div>
+      <div class="mb-3">
+        <input type="number" class="form-control" id="phoneNo" name="phoneNo" placeholder="Phone Number" required value="{{data.phoneNo}}" />
+      </div>
+      <div class="mb-3">
+        <input type="number" class="form-control" id="cnic" name="cnic" placeholder="CNIC" required value="{{data.cnic}}" />
+      </div>
+      <div class="mb-3">
+        <input type="text" class="form-control" id="forAccused" name="forAccused" placeholder="For Accused" required value="{{data.forAccused}}" />
+      </div>
+      <div class="mb-3">
+        <input type="text" class="form-control" id="caseDesc" name="caseDesc" placeholder="Case Description" required value="{{data.caseDesc}}" />
+      </div>
+      <div class="mb-3">
+        <input type="date" class="form-control" id="dateOfAttestation" name="dateOfAttestation" placeholder="Date of Attestation" required value="{{data.dateOfAttestation}}" />
+      </div>
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+  </div>
+{% endblock body %}

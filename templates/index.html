@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Home
+{% endblock title %}
+{% block body %}
+      <div class="container">
+        <br><br>
+        <h2>Fill the requirements</h2>
+        <form action="/" method="POST">
+          <div class="mb-3">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required />
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" id="phoneNo" name="phoneNo" placeholder="Phone Number" required />
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" id="cnic" name="cnic" placeholder="CNIC" required />
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="forAccused" name="forAccused" placeholder="For Accused" required />
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="caseDesc" name="caseDesc" placeholder="Case Description" required />
+          </div>
+          <div class="mb-3">
+            <input type="date" class="form-control" id="dateOfAttestation" name="dateOfAttestation" placeholder="Date of Attestation" required />
+          </div>
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
+      </div>
+
+      <div class="container">
+        <br><br>
+        <h2>Records</h2>
+        <hr>
+        {% if alldata|length  == 0 %}
+       <div class="alert alert-dark" role="alert">
+         No Record Found. Add your first record! 
+       </div>
+      {% else %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Phone No.</th>
+              <th scope="col">CNIC</th>
+              <th scope="col">For Accused</th>
+              <th scope="col">Case Description</th>
+              <th scope="col">Date of Attestation</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {% for data in alldata %}
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{data.name}}</td>
+                <td>{{data.phoneNo}}</td>
+                <td>{{data.cnic}}</td>
+                <td>{{data.forAccused}}</td>
+                <td>{{data.caseDesc}}</td>
+                <td>{{data.dateOfAttestation}}</td>
+                <td>
+                  <a href="/update/{{data.sno}}" type="button" class="btn btn-outline-dark btn-sm mx-1 my-1">Update </a>
+                  <a href="/delete/{{data.sno}}" type="button" class="btn btn-outline-dark btn-sm mx-1 my-1">Delete </a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+{% endblock body %}
