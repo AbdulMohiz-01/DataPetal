@@ -4,6 +4,8 @@ from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import sqlite3 as sql
+from flask import (Flask, send_file, url_for, jsonify, render_template)
+
 app = Flask(__name__)
 
 
@@ -16,8 +18,8 @@ db = SQLAlchemy(app);
 class MyAttributes(db.Model):
     sno = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.Integer, nullable = False)
-    phoneNo = db.Column(db.Integer, nullable = False)
-    cnic = db.Column(db.Integer, nullable = False)
+    phoneNo = db.Column(db.String(15), nullable = False)
+    cnic = db.Column(db.String(25), nullable = False)
     forAccused = db.Column(db.String(100), nullable = False)
     caseDesc = db.Column(db.String(300), nullable = False)
     dateOfAttestation = db.Column(db.String(25), nullable = False)
@@ -30,8 +32,8 @@ class MyAttributes(db.Model):
 def home():
     if request.method=='POST':
         name = request.form['name']
-        phoneNo = request.form['phoneNo']
-        cnic = request.form['cnic']
+        phoneNo = str(request.form['phoneNo'])
+        cnic = str(request.form['cnic'])
         forAccused = request.form['forAccused']
         caseDesc = request.form['caseDesc']
         dateOfAttestation = request.form['dateOfAttestation']
@@ -85,7 +87,15 @@ def export():
     connection = sql.connect("mydatabase.db")
     df = pd.read_sql(sql = "Select * from my_attributes order by name",con=connection)
     df.to_excel("allRecords.xls")
-    return redirect('/')
+    return render_template('download.html')
+
+@app.route('/download/')
+def download():
+    path = 'allRecords.xls'
+    return send_file(path, as_attachment=True)
+
+
+
 
 
 
