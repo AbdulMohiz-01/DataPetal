@@ -86,7 +86,7 @@ def deleteAll():
 def export():
     connection = sql.connect("mydatabase.db")
     df = pd.read_sql(sql = "Select * from my_attributes order by name",con=connection)
-    df.to_excel("allRecords.xls")
+    df.to_excel("allRecords.xls",index=False)
     return render_template('download.html')
 
 @app.route('/download/')
